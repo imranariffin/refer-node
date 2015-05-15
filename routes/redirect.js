@@ -6,14 +6,15 @@ var router = express.Router();
 
 /* GET a redirect function */
 
-// router.get('/', function (req, res) {
-// 	//res.redirect('https://www.google.ca/');
-// 	res.send("redirecting");//.redirect('/');
-// 	// res.redirect('../');
-// 	//console.log(req.data.long_url);
-// });
+router.get('/', function (req, res) {
+	res.redirect('https://www.google.ca/');
+	// res.redirect('../');
+	//console.log(req.data.long_url);
+});
 
-module.exports = function (req, res) {
-	console.log(res);
-	res.send(req.body.long_url);	
-}
+module.exports = router;
+
+// module.exports = function (req, res) {
+// 	console.log(res);
+// 	res.send(req.body.long_url);	
+// }
