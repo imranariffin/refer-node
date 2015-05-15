@@ -29,6 +29,11 @@ urls = function (req, res) {
 
 module.exports = urls;
 
+
+/*****************
+helper functions:
+*****************/
+
 function isValid(url) {
 	//is undefined
 	if (!url)
@@ -65,14 +70,6 @@ function fixUrl (url) {
 	return url;
 }
 
-//check if shortname is already available or not in db
-function isAvailable(shortname) {
-
-	//for now, return true
-	console.log(shortname + " is available");
-	return true;
-}
-
 //check !shortname.isBlank()
 //if blank, randomize shortname
 //if not blank, check if available
@@ -99,4 +96,12 @@ function filterShortname (shortname) {
 	console.log("shortname: " + shortname);	
 
 	return shortname;
+}
+
+//check if shortname is already available or not in db
+function isAvailable(shortname) {
+
+	//for now, return true
+	console.log(shortname + " is available");
+	return true;
 }
