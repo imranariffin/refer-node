@@ -4,9 +4,11 @@
 // var route = express.Route();
 
 urls = function (req, res) {
-	console.log(req.query);
+	console.log("req.body: " + req.body);
+	console.log("req.body.long: " + req.body.long);
+	console.log("req.body.shortname: " + req.body.short);
 //get long_url
-	var long_url = req.query["long_url"];
+	var long_url = req.body.long;
 	console.log("long_url: " + long_url);
 
 //check if valid
@@ -17,7 +19,7 @@ urls = function (req, res) {
 	long_url = fixUrl (long_url);
 
 //get shortname
-	var shortname = req.query["shortname"];
+	var shortname = req.body.short;
 	console.log("shortname: " + shortname);
 
 //check shortname in db & filter
