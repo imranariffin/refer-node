@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script src="/javascripts/jquery.min.js"></script>
+  <script src="/javascripts/main.js"></script>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    <p id="welcome">Welcome to {{ title }}</p>
+    <br><br><br>
+    	Insert url to shorten: 
+    	<input type="text" placeholder="insert url" id="long">
+    	<br>
+    	Shorten as: Refer.my/  
+    	<input type="text" id="short">
+    	<button type="submit" id="btn-redirect" method="GET">Shorten</button>
+    </form>
+  </body>
+</html>
