@@ -1,5 +1,9 @@
 //shortener
 
+//setup mongo
+var mongoose = require('mongoose');
+//mongoose.connect(MONGOLAB_URI);
+
 // var express = require('express');
 // var route = express.Route();
 
@@ -102,6 +106,14 @@ function filterShortname (shortname) {
 
 //check if shortname is already available or not in db
 function isAvailable(shortname) {
+
+	//for now, return true
+	console.log(shortname + " is available");
+	return true;
+}
+
+//check if shortname is already available or not in db
+function isAvailableUseDB(shortname) {
 
 	//for now, return true
 	console.log(shortname + " is available");
