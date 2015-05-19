@@ -27,9 +27,15 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//redirect setup
+var shortname = __dirname;
+console.log(__dirname);
+
+app.get(/.*$/, redirect);
+
+
 app.use('/', routes);
 app.use('/users', users);
-app.use('/redirect', redirect);
 app.use('/shorten', shortener);
 
 // catch 404 and forward to error handler
@@ -59,6 +65,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, "connection error:"));
 db.once('open', function(callback) {
+  console.log("__dirname: " + __dirname);
   console.log("db menjadi");
 });
 
