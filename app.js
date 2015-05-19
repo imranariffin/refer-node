@@ -4,11 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-//setup mongoose
-// var mongoose = require('mongoose');
-// var url_mongoose = 
-// mongoose.connect();
+var mongoose = require('mongoose');
 
 //requires
 var routes = require('./routes/index');
@@ -57,7 +53,14 @@ if (app.get('env') === 'development') {
   });
 }
 
+//db
+mongoose.connect('mongodb://heroku_app36802146:dnc3pt4asurjnja5qd4ggua2tj@ds037262.mongolab.com:37262/heroku_app36802146');
+var db = mongoose.connection;
 
+db.on('error', console.error.bind(console, "connection error:"));
+db.once('open', function(callback) {
+  console.log("db menjadi");
+});
 
 // production error handler
 // no stacktraces leaked to user

@@ -2,7 +2,9 @@
 
 //setup mongo
 var mongoose = require('mongoose');
-//mongoose.connect(MONGOLAB_URI);
+var schemas = require('../mongo-schemas/schemas');
+var Urls = mongoose.model('Urls', schemas.urls);
+var random = require('../scripts/random');
 
 // var express = require('express');
 // var route = express.Route();
@@ -26,12 +28,54 @@ urls = function (req, res) {
 	var shortname = req.body.short;
 	console.log("shortname: " + shortname);
 
-//check shortname in db & filter
-	shortname = filterShortname(shortname);
+//find shortname in db and update db
+	Urls.find({}, function (err, urlList) {
+		if (!err) {
+			console.log("Success: Able to access db ...");
 
-//return short_url
-	res.send(req.query);
+			//find shortname
+			for (var i in urlList) {
+				var url = urlList[i];
+
+				console.log("i: " + i);
+				console.log("url: " + url);
+
+				//if shortname already in db
+				if (url.short_name == shortname) {
+					console.log("shortname already in db");
+
+					//create random shortname
+					shortname = getRandomShort();
+					console.log("random shortname: " + shortname);
+
+					//update db using random shortname
+					updateDbUrl(long_url, shortname, "user");
+					res.send(shortname);
+					return false;
+				}
+			}
+			//good: shortname is not in use
+
+			//update db
+			updateDbUrl(long_url, shortname, "user");
+
+			console.log("Success: created short url");
+			//send
+			res.send("Success: created short url");
+			return true;
+			
+		} else {
+			console.log("Error: " + err);
+			res.send(err);
+			return -1;
+		}
+	});
 }
+
+// shortNamer() :
+//searches for shortname in urlList, 
+//if found, creates new, random shortname
+//else, use shortname to update db
 
 module.exports = urls;
 
@@ -76,34 +120,6 @@ function fixUrl (url) {
 	return url;
 }
 
-//check !shortname.isBlank()
-//if blank, randomize shortname
-//if not blank, check if available
-//if available, use it
-//if not randomize shortname
-function filterShortname (shortname) {
-	if (shortname) { //not blank
-		//isAvailable?
-		if (isAvailable(shortname))
-			shortname = shortname;
-		else {
-			//always have to check isAvailable in case
-			//randomized shortname already in db
-			do {
-				//getRandomShort returns a string
-				shortname = getRandomShort();
-			} while (isAvailable(shortname))
-		}
-	} else { //isBlank
-		do {
-			shortname = getRandomShort();
-		} while (isAvailable(shortname))
-	}
-	console.log("shortname: " + shortname);	
-
-	return shortname;
-}
-
 //check if shortname is already available or not in db
 function isAvailable(shortname) {
 
@@ -112,10 +128,23 @@ function isAvailable(shortname) {
 	return true;
 }
 
-//check if shortname is already available or not in db
-function isAvailableUseDB(shortname) {
 
-	//for now, return true
-	console.log(shortname + " is available");
-	return true;
+//generate random string
+function getRandomShort() {
+	var stringLen = 7;
+	return random.getRandomString(5);
+}
+
+//creates an instance of Urls model to update to db
+function updateDbUrl (long_url, shortname, creator) {
+	new Urls ({
+	    creator: creator,
+	    short_name: shortname,
+	    long_url: long_url,
+	    clicked: 0,
+	    points: 0,
+	    update_at : Date.now()		
+	}).save();
+
+	return 1;
 }
