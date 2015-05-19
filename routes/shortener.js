@@ -47,10 +47,10 @@ urls = function (req, res) {
 					console.log("shortname already in db");
 
 					//create random shortname
-					shortname = getRandomShort();
+					// shortname = getRandomShort();
 					console.log("random shortname: " + shortname);
 
-					resultShort = shortname;
+					resultShort = getRandomShort();
 
 					break;
 
@@ -67,9 +67,24 @@ urls = function (req, res) {
 
 			console.log("Success: created short url");
 			//send
-			res.send({
+
+			console.log(
+				"without JSON stringify:" +
+				{
+					shortname : resultShort
+				});
+
+			console.log(
+				"JSON.stringify: \n" +
+				JSON.stringify ({
 				shortname : resultShort
-			});
+			})
+				);
+
+			res.send(JSON.stringify ({
+				shortname : resultShort
+			})
+			);
 			return true;
 			
 		} else {
