@@ -33,12 +33,14 @@ urls = function (req, res) {
 		if (!err) {
 			console.log("Success: Able to access db ...");
 
+			var resultShort = shortname;
+
 			//find shortname
 			for (var i in urlList) {
 				var url = urlList[i];
 
-				console.log("i: " + i);
-				console.log("url: " + url);
+				// console.log("i: " + i);
+				// console.log("url: " + url);
 
 				//if shortname already in db
 				if (url.short_name == shortname) {
@@ -48,20 +50,26 @@ urls = function (req, res) {
 					shortname = getRandomShort();
 					console.log("random shortname: " + shortname);
 
+					resultShort = shortname;
+
+					break;
+
 					//update db using random shortname
-					updateDbUrl(long_url, shortname, "user");
-					res.send(shortname);
-					return false;
+					// updateDbUrl(long_url, shortname, "user");
+					// res.send(shortname);
+					// return false;
 				}
 			}
 			//good: shortname is not in use
 
 			//update db
-			updateDbUrl(long_url, shortname, "user");
+			updateDbUrl(long_url, resultShort, "user");
 
 			console.log("Success: created short url");
 			//send
-			res.send("Success: created short url");
+			res.send({
+				shortname : resultShort
+			});
 			return true;
 			
 		} else {
